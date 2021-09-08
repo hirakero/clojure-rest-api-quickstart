@@ -17,5 +17,19 @@
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
              :dev {:source-paths ["dev/src"]
                    :resource-paths ["dev/resources"]
-                   :dependencies [[integrant/repl "0.3.2"]]}
+                   :dependencies [[clj-http "3.11.0"]
+                                  [integrant/repl "0.3.2"]
+                                  [pjstadig/humane-test-output "0.10.0"]]
+                   :plugins [[jonase/eastwood "0.3.12"]
+                              [lein-cloverage "1.2.1"]
+                              [lein-kibit "0.1.8"]]
+                   :aliases {"test-coverage" ^{:doc "Execute cloverage."}
+                             ["cloverage" "--ns-exclude-regex" "^(:?dev|user)$" "--codecov" "--junit"]
+                             "lint" ^{:doc "Execute eastwood and kibit."}
+                             ["do"
+                              ["eastwood" "{:source-paths [\"src\"]
+                                            :test-paths []}"]
+                              ["kibit"]]}
+                   :injections [(require 'pjstadig.humane-test-output)
+                                (pjstadig.humane-test-output/activate!)]}
              :repl {:repl-options {:init-ns user}}})

@@ -42,7 +42,7 @@
   (if (get @todos (:todo-id params))
     (do (swap! todos dissoc (:todo-id params))
         (response/no-content))
-    (response/not-found {:message (str "todo " (:todo-id params) " does not exitst")})))
+    (response/not-found {:message (str "todo " (:todo-id params) " does not exist")})))
 
 (defn update-todo [{:keys [params]}]
   (let [task {"task" (:task params)}]
