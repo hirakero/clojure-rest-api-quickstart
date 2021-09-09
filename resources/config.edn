@@ -1,0 +1,5 @@
+{:minimal-api.routes/routes {}
+ :minimal-api.server/app {:routes #ig/ref :minimal-api.routes/routes}
+ :minimal-api.server/server {:app #ig/ref :minimal-api.server/app
+                             :options {:port 3000
+                                       :join? false}}}

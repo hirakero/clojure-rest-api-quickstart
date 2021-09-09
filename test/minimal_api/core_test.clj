@@ -20,7 +20,7 @@
           (t/is (= {:task "profit!"} body))))
       (t/testing "指定したIDのTODOが削除できる"
         (let [{:keys [status body]} (helper/http-delete "/todos/todo2")]
-          (t/is(= 204 status))
+          (t/is (= 204 status))
           (t/is (nil? body))))
       (t/testing "TODOが追加できる"
         (let [{:keys [status body]} (helper/http-post "/todos" {:task "something new"})]
