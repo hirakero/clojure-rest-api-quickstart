@@ -1,6 +1,36 @@
- (ns minimal-api.boundary.db.todo
+(ns minimal-api.boundary.db.todo
   (:require
+   [clojure.spec.alpha :as s]
    [minimal-api.boundary.db.core :as db]))
+
+(s/def ::id string?)
+(s/def ::todo (s/map-of string? string?))
+(s/def ::todos (s/map-of ::id ::todo))
+
+(s/fdef find-todos
+  :args (s/cat :db ::db/db)
+  :ret ::todos)
+
+(s/fdef find-todo-by-id
+  :args (s/cat :db ::db/db
+               :id ::id)
+  :ret (s/nilable ::todo))
+
+(s/fdef create-todo!
+  :args (s/cat :db ::db/db
+               :todo ::todo)
+  :ret ::id)
+
+(s/fdef update-todo!
+  :args (s/cat :db ::db/db
+               :id ::id
+               :todo ::todo)
+  :ret any?)
+
+(s/fdef delete-todo!
+  :args (s/cat :db ::db/db
+               :id ::id)
+  :ret any?)
 
 (defprotocol Todo
   (find-todos [db])
@@ -14,10 +44,10 @@
   (find-todos [db]
     (db/select-all db :todo))
   (find-todo-by-id [db id]
-                     (db/select-by-key db :todo id))
+    (db/select-by-key db :todo id))
   (create-todo! [db todo]
-                  (db/insert! db :todo "todo" todo))
+    (db/insert! db :todo "todo" todo))
   (update-todo! [db id todo]
-                  (db/update-by-key! db :todo id todo))
+    (db/update-by-key! db :todo id todo))
   (delete-todo! [db id]
-                  (db/delete-by-key! db :todo id)))
+    (db/delete-by-key! db :todo id)))

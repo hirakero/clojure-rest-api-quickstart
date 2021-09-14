@@ -19,6 +19,7 @@
                    :resource-paths ["dev/resources"]
                    :dependencies [[clj-http "3.11.0"]
                                   [integrant/repl "0.3.2"]
+                                  [orchestra "2020.09.18-1"]
                                   [pjstadig/humane-test-output "0.10.0"]]
                    :plugins [[jonase/eastwood "0.3.12"]
                               [lein-cloverage "1.2.1"]

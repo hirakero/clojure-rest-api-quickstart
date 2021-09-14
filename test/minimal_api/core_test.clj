@@ -1,12 +1,17 @@
 (ns minimal-api.core-test
   (:require [clojure.test :as t]
+  
             [minimal-api.test-helper :as helper :refer [with-db-data with-system]]))
+
+(t/use-fixtures
+ :once
+ helper/instrument-specs)
 
 (t/deftest test-api
   (with-system [sys (helper/test-system)]
-    (with-db-data [sys {"todo1" {"task" "build an API"}
-                        "todo2" {"task" "?????"}
-                        "todo3" {"task" "profit!"}}]
+    (with-db-data [sys {:todo {"todo1" {"task" "build an API"}
+                               "todo2" {"task" "?????"}
+                               "todo3" {"task" "profit!"}}}]
       (t/testing "todoリストの一覧が取得できる"
         (let [{:keys [status body]} (helper/http-get "/todos")]
           (t/is (= 200 status))
