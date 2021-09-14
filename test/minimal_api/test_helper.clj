@@ -2,14 +2,13 @@
   (:require
    [clj-http.client :as client]
    [clojure.java.io :as io]
-   [integrant.core :as ig]
-   [minimal-api.db :as db]))
+   [integrant.core :as ig]))
 
 (defn test-config []
   (-> (io/resource "config.edn")
       slurp
       ig/read-string
-      (assoc-in [:minimal-api-lein.server/server :options :port] 3001)
+      (assoc-in [:minimal-api.server/server :options :port] 3001)
       (doto ig/load-namespaces)))
 
 (defn test-system []
@@ -25,12 +24,13 @@
        ~@body
        (finally (ig/halt! ~bound-sym)))))
 
-(defmacro with-db-data [db-data-map & body]
-  `(let [old-val# @db/todos]
+(defmacro with-db-data [[system db-data-map] & body]
+  `(let [db# (:minimal-api.boundary.db.core/db ~system)
+         old-val# @(:data db#)]
      (try
-       (reset! db/todos ~db-data-map)
+       (reset! (:data db#) ~db-data-map)
        ~@body
-       (finally (reset! db/todos old-val#)))))
+       (finally (reset! (:data db#) old-val#)))))
 
 ;; HTTP client
 

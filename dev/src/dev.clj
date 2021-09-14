@@ -21,4 +21,10 @@
 (defn test
   ([] (test/run-all-tests #"minimal-api\..+-test"))
   ([ns-sym] (test/run-tests ns-sym)))
- 
+
+(defn db []
+  (:minimal-api.boundary.db.core/db system))
+
+(defn db-run [f & args]
+  (apply f (db) args))
+

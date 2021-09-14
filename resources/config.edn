@@ -1,5 +1,7 @@
-{:minimal-api.routes/routes {}
- :minimal-api.server/app {:routes #ig/ref :minimal-api.routes/routes}
+{:minimal-api.boundary.db.core/db {}
+ :minimal-api.routes/routes {}
+ :minimal-api.server/app {:routes #ig/ref :minimal-api.routes/routes
+                          :db #ig/ref :minimal-api.boundary.db.core/db}
  :minimal-api.server/server {:app #ig/ref :minimal-api.server/app
                              :options {:port 3000
                                        :join? false}}}
